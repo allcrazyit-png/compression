@@ -19,15 +19,19 @@
     </div>
   </div>
   <script>
-    window.onerror = function (msg, url, line, col, error) {
+    window.addEventListener('error', function (e) {
       var log = document.getElementById('error-log');
-      log.innerText += "Error: " + msg + "\nURL: " + url + "\nLine: " + line + "\n\n";
-      return false;
-    };
-    window.onunhandledrejection = function (e) {
+      if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
+        log.innerText += "Resource Error: Failed to load " + (e.target.src || e.target.href) + "\n\n";
+      } else {
+        log.innerText += "Runtime Error: " + (e.message || e) + "\n\n";
+      }
+    }, true); // Capture phase to catch resource errors
+
+    window.addEventListener('unhandledrejection', function (e) {
       var log = document.getElementById('error-log');
-      log.innerText += "Promise Error: " + e.reason + "\n\n";
-    };
+      log.innerText += "Promise Error: " + (e.reason ? e.reason.toString() : 'Unknown') + "\n\n";
+    });
   </script>
   <script type="module" src="/src/main.jsx"></script>
 </body>
