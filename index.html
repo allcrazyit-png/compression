@@ -1,40 +1,17 @@
 <!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/compression/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>image-compressor</title>
-  <script type="module" crossorigin src="/compression/assets/index-DC5CoGY3.js"></script>
-  <link rel="stylesheet" crossorigin href="/compression/assets/index-DQdOUjqF.css">
-</head>
-
-<body>
-  <div id="root">
-    <div style="font-family: sans-serif; text-align: center; padding-top: 50px; color: #666;">
-      Loading application...<br>
-      <small>If this persists, JavaScript failed to load.</small>
-      <div id="error-log"
-        style="color: red; text-align: left; margin: 20px; white-space: pre-wrap; font-family: monospace; border: 1px solid #ccc; padding: 10px; min-height: 50px;">
-        Waiting for errors... (Debug Mode Active)</div>
-    </div>
-  </div>
-  <script>
-    window.addEventListener('error', function (e) {
-      var log = document.getElementById('error-log');
-      if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
-        log.innerText += "Resource Error: Failed to load " + (e.target.src || e.target.href) + "\n\n";
-      } else {
-        log.innerText += "Runtime Error: " + (e.message || e) + "\n\n";
-      }
-    }, true); // Capture phase to catch resource errors
-
-    window.addEventListener('unhandledrejection', function (e) {
-      var log = document.getElementById('error-log');
-      log.innerText += "Promise Error: " + (e.reason ? e.reason.toString() : 'Unknown') + "\n\n";
-    });
-  </script>
-</body>
-
+<html lang="zh-TW" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/compression/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>產品目錄 - 瑞全企業</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script type="module" crossorigin src="/compression/assets/index-DF1S6d96.js"></script>
+    <link rel="stylesheet" crossorigin href="/compression/assets/index-CtjiAaAy.css">
+  </head>
+  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+    <div id="root"></div>
+  </body>
 </html>
