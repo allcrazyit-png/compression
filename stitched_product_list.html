@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>產品清單主頁面 - 瑞全企業</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top AppBar Container -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 px-3">數位產品主檔</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-full size-10 bg-primary/10 text-primary">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+<!-- Search Bar Section -->
+<div class="px-4 py-3">
+<label class="flex flex-col min-w-40 h-11 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full shadow-sm">
+<div class="text-slate-400 flex border-none bg-white dark:bg-[#1c2631] items-center justify-center pl-4 rounded-l-xl">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#1c2631] h-full placeholder:text-slate-400 pl-2 text-base font-normal leading-normal" placeholder="搜尋品番、品名..." value=""/>
+</div>
+</label>
+</div>
+<!-- Filter Chips Section -->
+<div class="flex gap-2 px-4 pb-4 overflow-x-auto custom-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-1 rounded-full bg-primary text-white px-4 shadow-sm">
+<span class="text-sm font-medium">全部產品</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-1 rounded-full bg-white dark:bg-[#1c2631] px-4 border border-slate-200 dark:border-slate-700">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium">車型</p>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-1 rounded-full bg-white dark:bg-[#1c2631] px-4 border border-slate-200 dark:border-slate-700">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium">客戶</p>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-1 rounded-full bg-white dark:bg-[#1c2631] px-4 border border-slate-200 dark:border-slate-700">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium">噸數</p>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+</div>
+</header>
+<main class="p-4 space-y-4 max-w-md mx-auto">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">產品清單 (顯示 124 筆)</h3>
+<span class="material-symbols-outlined text-slate-400 text-lg">filter_list</span>
+</div>
+<!-- Product Card 1 -->
+<div class="bg-white dark:bg-[#1c2631] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 transition-active active:scale-[0.98]">
+<div class="flex p-4">
+<div class="w-20 h-20 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
+<img class="w-full h-full object-cover" data-alt="Close up of a metal gear component" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATIoD0uJUkSYv4ObxzBbMvGLLWBmplPe97XGii61PLbalGUyOFMtLmAPTp_0Q9OsSicdXNBxx0uoz4PaMUxxAv3CLUeB-VaWKZj8z-XzD_E0pfAe0gxYfdbOX2uZ83XDfKIM51Yu1FDdbYy8DuNHSTMgaNjkKNKkyKWVGKSnzwjQsloMAkr56Mhz471mVTy2JDojyZd7-ApM5iOh-gZ2_TC9OCbtblJfY29ClxzNcSurmHNjdvlwEI7dbJffJDOQwPOElCqlLmJHT7"/>
+</div>
+<div class="ml-4 flex-1">
+<div class="flex justify-between items-start">
+<p class="text-primary font-bold text-sm tracking-tight leading-none mb-1 uppercase">品番: RQ-A001</p>
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-bold px-2 py-0.5 rounded-full">生產中</span>
+</div>
+<h4 class="text-slate-900 dark:text-white font-bold text-lg leading-tight mb-2">傳動軸支架</h4>
+<div class="flex flex-wrap gap-y-1 text-slate-500 dark:text-slate-400 text-xs">
+<div class="flex items-center mr-3">
+<span class="material-symbols-outlined text-[14px] mr-1">directions_car</span>
+<span>Corolla Cross</span>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">precision_manufacturing</span>
+<span>200T 機台</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex border-t border-slate-100 dark:border-slate-800 p-2 gap-2 bg-slate-50/50 dark:bg-slate-800/30">
+<button class="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-primary text-white text-xs font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+                    數據詳情
+                </button>
+<button class="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-xs font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]">description</span>
+                    標準書類
+                </button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-white dark:bg-[#1c2631] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 transition-active active:scale-[0.98]">
+<div class="flex p-4">
+<div class="w-20 h-20 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
+<img class="w-full h-full object-cover" data-alt="Mechanical industrial steel engine part" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHteoUfrXYQbMeHUtFOA7hwWbDVIldUFwQbU0PA5gXpWHL5l3VOfN7DUER9KfuLwwacPCkdQBPA5hK7KsyM2riS_l5N7XUQUC3uMGDdedJe8vyw57Xiu2JfQeXBiXcH21lCYuXIc2ij9cIoqiXn8um_IISh5vIXirb6PMb2ghB7u8D5zBt2a-sK2B1M9VV1zlHIAVVFvoYXAQ6TciecosPDhIXFchQwlxOvbeLfBfOHWKQ3JLDzbSTxUr4npuWNO7mylWmp3_84tRY"/>
+</div>
+<div class="ml-4 flex-1">
+<div class="flex justify-between items-start">
+<p class="text-primary font-bold text-sm tracking-tight leading-none mb-1 uppercase">品番: RQ-H102</p>
+<span class="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded-full">試模中</span>
+</div>
+<h4 class="text-slate-900 dark:text-white font-bold text-lg leading-tight mb-2">引擎側支撐架</h4>
+<div class="flex flex-wrap gap-y-1 text-slate-500 dark:text-slate-400 text-xs">
+<div class="flex items-center mr-3">
+<span class="material-symbols-outlined text-[14px] mr-1">directions_car</span>
+<span>Honda CR-V</span>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">precision_manufacturing</span>
+<span>400T 機台</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex border-t border-slate-100 dark:border-slate-800 p-2 gap-2 bg-slate-50/50 dark:bg-slate-800/30">
+<button class="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-primary text-white text-xs font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+                    數據詳情
+                </button>
+<button class="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-xs font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]">description</span>
+                    標準書類
+                </button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-white dark:bg-[#1c2631] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 transition-active active:scale-[0.98]">
+<div class="flex p-4">
+<div class="w-20 h-20 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
+<img class="w-full h-full object-cover" data-alt="Industrial robot arm manufacturing part" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc8UjUnKGeDSHSNWWXZqnz6ZqTt_lQCJzc5fRu0A67f7QwMeCuaFHv5GseqM08m5g56BgXxQFp12_AQwgTSgXnjvUwPPSY6DAghgOQa6xlzhK6zZ5ViUwMwaQ2p4bD64o4zaFA2YdFsOQTHa8AgFx4a-kdcfugQfhROMAV5ZyCBcuJtTzztz5BEd5fsNQ_egCuTl55kgpzQCGza-6SCOs4uDFOJ7Up3hnQApdjWoMMnevlu0-L3T5KDTupFKEiswhoR9kUJQkZgrVt"/>
+</div>
+<div class="ml-4 flex-1">
+<div class="flex justify-between items-start">
+<p class="text-primary font-bold text-sm tracking-tight leading-none mb-1 uppercase">品番: RQ-T508</p>
+</div>
+<h4 class="text-slate-900 dark:text-white font-bold text-lg leading-tight mb-2">後懸吊連桿</h4>
+<div class="flex flex-wrap gap-y-1 text-slate-500 dark:text-slate-400 text-xs">
+<div class="flex items-center mr-3">
+<span class="material-symbols-outlined text-[14px] mr-1">directions_car</span>
+<span>Tesla Model Y</span>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">precision_manufacturing</span>
+<span>600T 機台</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex border-t border-slate-100 dark:border-slate-800 p-2 gap-2 bg-slate-50/50 dark:bg-slate-800/30">
+<button class="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-primary text-white text-xs font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+                    數據詳情
+                </button>
+<button class="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-xs font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]">description</span>
+                    標準書類
+                </button>
+</div>
+</div>
+<div class="py-10 text-center">
+<p class="text-slate-400 text-sm">已顯示所有搜尋結果</p>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Friendly) -->
+<nav class="fixed bottom-0 w-full bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 pb-safe-area">
+<div class="flex justify-around items-center h-16 max-w-md mx-auto">
+<button class="flex flex-col items-center justify-center gap-1 text-primary">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-bold">產品主檔</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="text-[10px] font-bold">機台狀態</span>
+</button>
+<div class="relative -top-4">
+<button class="bg-primary text-white size-14 rounded-full shadow-lg shadow-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center justify-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] font-bold">文件中心</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-[10px] font-bold">系統通知</span>
+</button>
+</div>
+<!-- Safe area spacer for iOS -->
+<div class="h-4"></div>
+</nav>
+<!-- Scroll Spacer -->
+<div class="h-24"></div>
+</body></html>
