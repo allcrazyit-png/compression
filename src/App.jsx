@@ -5,7 +5,7 @@ import ProductDetails from './pages/ProductDetails';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/compression">
       <Routes>
         <Route path="/" element={<ProductList />} />
         <Route path="/documents" element={<StandardDocuments />} />
