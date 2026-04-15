@@ -126,7 +126,7 @@ function App() {
 
       <footer style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>
         <p>所有處理皆在瀏覽器端完成，您的圖片/PDF 不會上傳至伺服器。</p>
-        <p style={{ marginTop: '0.5rem', fontSize: '0.75rem', opacity: 0.6 }}>Version v4.0.1</p>
+        <p style={{ marginTop: '0.5rem', fontSize: '0.75rem', opacity: 0.6 }}>Version v4.1.0</p>
       </footer>
     </div>
   );
