@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { Upload, Image as ImageIcon } from 'lucide-react';
-import { compressImage, formatSize } from '../utils/compressor';
 
 const DropZone = ({ onImageSelected }) => {
     const [isDragOver, setIsDragOver] = useState(false);
@@ -34,7 +33,8 @@ const DropZone = ({ onImageSelected }) => {
 
     const processFiles = (fileList) => {
         const validFiles = Array.from(fileList).filter(file =>
-            file.type.startsWith('image/') || file.type === 'application/pdf'
+            file.type.startsWith('image/') ||
+            file.type === 'application/pdf'
         );
         if (validFiles.length === 0) {
             alert('請上傳圖片或 PDF 檔案');
@@ -93,7 +93,7 @@ const DropZone = ({ onImageSelected }) => {
             </h3>
 
             <p style={{ color: 'var(--color-text-secondary)' }}>
-                支援 JPG, PNG, WEBP, PDF (壓縮至 500KB，維持原檔名)
+                支援 JPG, PNG, WEBP, PDF
             </p>
         </div>
     );

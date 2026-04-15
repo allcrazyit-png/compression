@@ -1,6 +1,6 @@
 import * as pdfjsLib from 'pdfjs-dist';
 import { jsPDF } from 'jspdf';
-import { compressImage } from './compressor';
+import { compressImage, TARGET_MAX_SIZE_BYTES, TARGET_MAX_SIZE_MB } from './compressor';
 
 // Initialize PDF.js worker
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
@@ -15,75 +15,100 @@ export const compressPDF = async (pdfFile, options = {}) => {
         const arrayBuffer = await pdfFile.arrayBuffer();
         const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const numPages = pdfDoc.numPages;
+        const maxSizeBytes = Math.round((options.maxSizeMB ?? TARGET_MAX_SIZE_MB) * 1024 * 1024);
 
-        // Create a new PDF with jsPDF
-        // We'll set the orientation/format based on the first page later
-        let doc = null;
+        const attempts = [
+            { scale: 1.5, jpegQuality: 0.82, imageMaxSizeMB: options.maxSizeMB ?? TARGET_MAX_SIZE_MB },
+            { scale: 1.25, jpegQuality: 0.72, imageMaxSizeMB: Math.min(options.maxSizeMB ?? TARGET_MAX_SIZE_MB, TARGET_MAX_SIZE_BYTES / 1024 / 1024 / 2) },
+            { scale: 1.0, jpegQuality: 0.62, imageMaxSizeMB: Math.min(options.maxSizeMB ?? TARGET_MAX_SIZE_MB, TARGET_MAX_SIZE_BYTES / 1024 / 1024 / 3) },
+            { scale: 0.85, jpegQuality: 0.5, imageMaxSizeMB: Math.min(options.maxSizeMB ?? TARGET_MAX_SIZE_MB, TARGET_MAX_SIZE_BYTES / 1024 / 1024 / 4) }
+        ];
 
-        for (let i = 1; i <= numPages; i++) {
-            if (onProgress) onProgress(i, numPages);
-            const page = await pdfDoc.getPage(i);
+        let bestBlob = null;
 
-            // Render at a decent scale for quality (e.g. 1.5 or 2.0)
-            // Lower scale = smaller size but blurrier text
-            const scale = 1.5;
-            const viewport = page.getViewport({ scale });
-
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            await page.render({
-                canvasContext: context,
-                viewport: viewport
-            }).promise;
-
-            // Convert canvas to Blob
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
-
-            // Compress the image
-            // We force JPEG here to ensure size reduction for the PDF pages
-            const compressedImageBlob = await compressImage(blob, {
-                fileType: 'image/jpeg',
-                ...options
+        for (const attempt of attempts) {
+            const compressedBlob = await renderCompressedPdf(pdfDoc, numPages, {
+                onProgress,
+                scale: attempt.scale,
+                jpegQuality: attempt.jpegQuality,
+                imageMaxSizeMB: attempt.imageMaxSizeMB,
+                transformImageBlob: options.transformImageBlob
             });
 
-            // Get image data for jsPDF
-            const compressedDataUrl = await new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(compressedImageBlob);
-            });
-
-            // Initialize doc if first page
-            const width = viewport.width / scale; // Original PDF point size
-            const height = viewport.height / scale;
-            // Convert points to mm roughly (1 pt = 0.352778 mm)
-            const mmWidth = width * 0.352778;
-            const mmHeight = height * 0.352778;
-
-            const orientation = width > height ? 'l' : 'p';
-
-            if (!doc) {
-                doc = new jsPDF({
-                    orientation,
-                    unit: 'mm',
-                    format: [mmWidth, mmHeight]
-                });
-            } else {
-                doc.addPage([mmWidth, mmHeight], orientation);
+            if (!bestBlob || compressedBlob.size < bestBlob.size) {
+                bestBlob = compressedBlob;
             }
 
-            // Add image to PDF
-            // x, y, w, h
-            doc.addImage(compressedDataUrl, 'JPEG', 0, 0, mmWidth, mmHeight, undefined, 'FAST');
+            if (compressedBlob.size <= maxSizeBytes) {
+                return compressedBlob;
+            }
         }
 
-        return doc.output('blob');
-
+        return bestBlob;
     } catch (error) {
         console.error("PDF Compression failed:", error);
         throw error;
     }
+};
+
+const renderCompressedPdf = async (pdfDoc, numPages, options) => {
+    const { onProgress, scale, jpegQuality, imageMaxSizeMB, transformImageBlob } = options;
+    let doc = null;
+
+    for (let i = 1; i <= numPages; i++) {
+        if (onProgress) onProgress(i, numPages);
+        const page = await pdfDoc.getPage(i);
+
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        await page.render({
+            canvasContext: context,
+            viewport: viewport
+        }).promise;
+
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', jpegQuality));
+
+        let compressedImageBlob = await compressImage(blob, {
+            fileType: 'image/jpeg',
+            maxSizeMB: imageMaxSizeMB,
+            initialQuality: jpegQuality,
+            useWebWorker: true
+        });
+
+        if (transformImageBlob) {
+            compressedImageBlob = await transformImageBlob(compressedImageBlob, i, numPages);
+        }
+
+        const compressedDataUrl = await new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(compressedImageBlob);
+        });
+
+        const width = viewport.width / scale;
+        const height = viewport.height / scale;
+        const mmWidth = width * 0.352778;
+        const mmHeight = height * 0.352778;
+
+        const orientation = width > height ? 'l' : 'p';
+
+        if (!doc) {
+            doc = new jsPDF({
+                orientation,
+                unit: 'mm',
+                format: [mmWidth, mmHeight]
+            });
+        } else {
+            doc.addPage([mmWidth, mmHeight], orientation);
+        }
+
+        doc.addImage(compressedDataUrl, 'JPEG', 0, 0, mmWidth, mmHeight, undefined, 'FAST');
+    }
+
+    return doc.output('blob');
 };

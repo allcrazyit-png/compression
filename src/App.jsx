@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import DropZone from './components/DropZone';
 import ImagePreview from './components/ImagePreview';
-import { compressImage } from './utils/compressor';
+import { compressImage, TARGET_MAX_SIZE_MB } from './utils/compressor';
 import JSZip from 'jszip';
-import { Download } from 'lucide-react';
+import { compressPDF } from './utils/pdfCompressor';
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -31,23 +31,20 @@ function App() {
 
         let compressed;
         if (entry.original.type === 'application/pdf') {
-          const { compressPDF } = await import('./utils/pdfCompressor'); // Dynamic import
-          // For PDF we might default to 1MB or use targetSize but remember pages are compressed individually
-          // We pass targetSize to the page compressor
           compressed = await compressPDF(entry.original, {
-            maxSizeMB: 0.5,
+            maxSizeMB: TARGET_MAX_SIZE_MB,
             onProgress: (current, total) => {
               setFiles(prev => prev.map(f => f.id === entry.id ? { ...f, progress: `${current}/${total}` } : f));
             }
           });
         } else {
-          compressed = await compressImage(entry.original, { maxSizeMB: 0.5 });
+          compressed = await compressImage(entry.original, { maxSizeMB: TARGET_MAX_SIZE_MB });
         }
 
-        setFiles(prev => prev.map(f => f.id === entry.id ? { ...f, compressed, status: 'done' } : f));
+        setFiles(prev => prev.map(f => f.id === entry.id ? { ...f, compressed, status: 'done', progress: null } : f));
       } catch (error) {
         console.error(error);
-        setFiles(prev => prev.map(f => f.id === entry.id ? { ...f, status: 'error', error: '壓縮失敗' } : f));
+        setFiles(prev => prev.map(f => f.id === entry.id ? { ...f, status: 'error', error: error.message || '處理失敗' } : f));
       }
     }
 
@@ -96,9 +93,7 @@ function App() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <header style={{ padding: '2rem 1rem 3rem', textAlign: 'center' }}>
         <h1 className="title">ImagePress</h1>
-        <p className="subtitle">極簡、快速、隱私。批量壓縮圖片。</p>
-
-
+        <p className="subtitle">極簡、快速、隱私。批量壓縮圖片與 PDF。</p>
       </header>
 
       <main style={{ flex: 1, padding: '0 1rem', paddingBottom: '4rem', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
@@ -130,7 +125,8 @@ function App() {
       </main>
 
       <footer style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>
-        <p>所有處理皆在瀏覽器端完成，您的照片不會上傳至伺服器。</p>
+        <p>所有處理皆在瀏覽器端完成，您的圖片/PDF 不會上傳至伺服器。</p>
+        <p style={{ marginTop: '0.5rem', fontSize: '0.75rem', opacity: 0.6 }}>Version v4.0.1</p>
       </footer>
     </div>
   );

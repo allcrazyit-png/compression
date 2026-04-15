@@ -1,16 +1,18 @@
 import imageCompression from 'browser-image-compression';
 
+export const TARGET_MAX_SIZE_BYTES = 500 * 1024;
+export const TARGET_MAX_SIZE_MB = TARGET_MAX_SIZE_BYTES / (1024 * 1024);
+
 /**
- * 壓縮圖片至 1MB 以下
+ * 壓縮圖片至 500KB 以下
  * @param {File} imageFile 原始圖片檔案
  * @returns {Promise<File>} 壓縮後的檔案
  */
 export const compressImage = async (imageFile, customOptions = {}) => {
     const options = {
-        maxSizeMB: 0.5, // Default
+        maxSizeMB: TARGET_MAX_SIZE_MB,
         useWebWorker: true,
-        // fileType: 'image/jpeg', // Remove this line to preserve original file type (e.g. PNG)
-        ...customOptions // Allow overriding
+        ...customOptions
     };
 
     try {
